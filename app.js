@@ -10,7 +10,7 @@ app.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
 // Allow requests from all origins with credentials
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: "https://carbon-shredder-backend.vercel.app",
     credentials: true,
   })
 );
