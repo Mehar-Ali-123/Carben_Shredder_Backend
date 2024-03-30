@@ -15,7 +15,7 @@ const { isAuthenticated } = require("../middleware/auth.js");
 
 router.post("/create-user", upload.single("file"), async (req, res, next) => {
   try {
-    const { name, email, password , country } = req.body;
+    const { name, email, password, country } = req.body;
 
     // Check if the email is not null
     if (!email) {
@@ -80,7 +80,7 @@ const createActivationToken = (newUser) => {
     userId: newUser._id,
   };
   return jwt.sign(payload, process.env.ACTIVATION_SECRET, {
-    expiresIn: "5m",
+    expiresIn: process.env.JWT_EXPIRES,
   });
 };
 
@@ -161,6 +161,119 @@ router.get(
       return next(new ErrorHandler(error.message, 500));
     }
   })
+);
+
+router.get(
+  "/get-profile-data",
+  isAuthenticated,
+  catchAsyncError(async (req, res, next) => {
+    try {
+      const user = await User.findById(req.user.id);
+      if (!user) {
+        return next(new ErrorHandler("User not found", 404));
+      }
+      res.status(200).json({
+        success: true,
+        user,
+      });
+    } catch (error) {
+      return next(new ErrorHandler(error.message, 500));
+    }
+  })
+);
+
+
+// router.put(
+//   '/update-profile',
+//   isAuthenticated,
+//   upload.single('file'), // 'file' is the field name for the image in the form
+//   async (req, res, next) => {
+//     try {
+//       const userId = req.user.id;
+//       const { name, email, country, currentPassword, newPassword } = req.body;
+
+//       // Check if the user exists
+//       const user = await User.findById(userId);
+//       if (!user) {
+//         return next(new ErrorHandler('User not found', 404));
+//       }
+ 
+//       user.name = name;
+//       user.email = email;
+//       user.country = country;
+ 
+//       if (req.file) {
+//         user.file = req.file.path;  
+//       }
+ 
+//       const isPasswordMatch = await bcrypt.compare(currentPassword, user.password);
+//       if (!isPasswordMatch) {
+//         return next(new ErrorHandler('Incorrect current password', 400));
+//       }
+ 
+//       if (newPassword) {
+//         const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+//         user.password = hashedNewPassword;
+//       }
+ 
+//       await user.save();
+
+//       res.status(200).json({
+//         success: true,
+//         message: 'User profile and password updated successfully',
+//         user,
+//       });
+//     } catch (error) {
+//       return next(new ErrorHandler(error.message, 500));
+//     }
+//   }
+// );
+
+
+router.put(
+  '/update-profile',
+  isAuthenticated,
+  upload.single('file'), // 'file' is the field name for the image in the form
+  async (req, res, next) => {
+    try {
+      const userId = req.user.id;
+      const { name, email, country, currentPassword, newPassword } = req.body;
+
+      // Check if the user exists
+      const user = await User.findById(userId);
+      if (!user) {
+        return next(new ErrorHandler('User not found', 404));
+      }
+ 
+      user.name = name;
+      user.email = email;
+      user.country = country;
+ 
+      if (req.file) {
+        user.avatar = req.file.filename; // Update the avatar field with the uploaded file's filename
+      }
+ 
+      const isPasswordMatch = await bcrypt.compare(currentPassword, user.password);
+      if (!isPasswordMatch) {
+        return next(new ErrorHandler('Incorrect current password', 400));
+      }
+ 
+      if (newPassword) {
+        const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+        user.password = hashedNewPassword;
+      }
+ 
+      await user.save();
+
+      res.status(200).json({
+        success: true,
+        message: 'User profile and password updated successfully',
+        user,
+      });
+    } catch (error) {
+      return next(new ErrorHandler(error.message, 500));
+    }
+  }
 );
 
 module.exports = router;
