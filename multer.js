@@ -12,8 +12,8 @@ const storage = multer.diskStorage({
       Math.round(Math.random() * 1e9);
     const filename = file.originalname.split("-")[0];
     cb(null, filename + "-" + uniqueSuffix + ".png");
-  },
-});
+  }, 
+});  
 
 exports.upload = multer({ storage: storage });
 

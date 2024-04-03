@@ -9,11 +9,7 @@ app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
 // Allow requests from all origins with credentials
 app.use(
-  cors({
-    // origin: "https://carbon-shredder-backend.vercel.app",
-    origin: "http://localhost:3000",
-    credentials: true,
-  })
+  cors()
 );
 app.use("/", express.static("uploads"));
 app.use(express.json());
@@ -28,6 +24,10 @@ app.use((err, req, res, next) => {
 //     path: "./config/.env",
 //   });
 // }
+// Root API endpoint
+app.get('/', (req, res) => {
+  res.send('API is working'); // Send a plain text response
+});
 
 const user = require("./controller/user");
 app.use("/api/v2/user", user);
