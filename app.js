@@ -20,7 +20,7 @@ app.use((err, req, res, next) => {
   res.status(500).send("Internal Server Error");
 });
 
-app.use(express.static("./uploads"));
+app.use(express.static("uploads"));
 
 // config
 // if (process.env.NODE_ENV !== "PRODUCTION") {
