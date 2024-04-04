@@ -230,7 +230,7 @@ router.get(
 // );
 
 
-router.put( 
+router.put(
   '/update-profile',
   isAuthenticated,
   upload.single('file'), // 'file' is the field name for the image in the form
@@ -275,5 +275,6 @@ router.put(
     }
   }
 );
+
 
 module.exports = router;
