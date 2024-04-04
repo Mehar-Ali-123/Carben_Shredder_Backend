@@ -7,10 +7,11 @@ const cors = require("cors");
 
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
-const corsOptions = {
-  origin: "https://busy-jade-cobra-toga.cyclic.app/",
-};
-app.use(cors(corsOptions));
+// const corsOptions = {
+//   origin: "https://busy-jade-cobra-toga.cyclic.app/",
+// };
+// app.use(cors(corsOptions));
+app.use(cors());
 
 // app.use("/", express.static("uploads"));
 app.use(express.json());
