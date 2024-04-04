@@ -8,15 +8,15 @@ const cors = require("cors");
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
 // Allow requests from all origins with credentials
-app.use(
-  cors()
-);
+app.use(cors());
 app.use("/", express.static("uploads"));
 app.use(express.json());
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).send("Internal Server Error");
 });
+
+app.use(express.static("./uploads"));
 
 // config
 // if (process.env.NODE_ENV !== "PRODUCTION") {
@@ -25,8 +25,8 @@ app.use((err, req, res, next) => {
 //   });
 // }
 // Root API endpoint
-app.get('/', (req, res) => {
-  res.send('API is working'); // Send a plain text response
+app.get("/", (req, res) => {
+  res.send("API is working"); // Send a plain text response
 });
 
 const user = require("./controller/user");
