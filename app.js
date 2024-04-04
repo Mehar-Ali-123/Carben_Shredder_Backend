@@ -9,13 +9,13 @@ app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
 // Allow requests from all origins with credentials
 app.use(cors());
-app.use("/", express.static("uploads"));
+// app.use("/", express.static("uploads"));
 app.use(express.json());
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).send("Internal Server Error");
 });
-
+ 
 app.use(express.static("./uploads"));
 
 // config
