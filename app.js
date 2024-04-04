@@ -8,7 +8,12 @@ const cors = require("cors");
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
 // Allow requests from all origins with credentials
-app.use(cors());
+const corsOptions = {
+  origin: 'https://busy-jade-cobra-toga.cyclic.app/', 
+};
+
+app.use(cors(corsOptions));
+
 // app.use("/", express.static("uploads"));
 app.use(express.json());
 app.use((err, req, res, next) => {
