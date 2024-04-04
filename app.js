@@ -7,11 +7,9 @@ const cors = require("cors");
 
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
-// Allow requests from all origins with credentials
 const corsOptions = {
-  origin: 'https://busy-jade-cobra-toga.cyclic.app/', 
+  origin: "https://busy-jade-cobra-toga.cyclic.app/",
 };
-
 app.use(cors(corsOptions));
 
 // app.use("/", express.static("uploads"));
@@ -20,7 +18,7 @@ app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).send("Internal Server Error");
 });
- 
+
 app.use(express.static("./uploads"));
 
 // config
