@@ -1,14 +1,15 @@
-const express = require("express");
-const ErrorHandler = require("./middleware/error");
+import express from "express"; 
+import ErrorHandlerMiddleware from "./middleware/error.js"; 
 const app = express();
-const cookieParser = require("cookie-parser");
-const bodyParser = require("body-parser");
-const cors = require("cors");
-const session = require("express-session");
-const passport = require("passport");
-const LocalStrategy = require("passport-local").Strategy;
-const User = require("./model/user");
-const userRoutes = require("./controller/user");
+import cookieParser from "cookie-parser";
+import bodyParser from "body-parser";
+import cors from "cors";
+import session from "express-session";
+import passport from "passport";
+import { Strategy as LocalStrategy } from "passport-local";
+import User from "./model/user.js";
+import authRoutes from "./controller/auth.js"
+import user from "./controller/user.js"
 
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
@@ -83,11 +84,10 @@ app.get("/", (req, res) => {
   res.send("API is working"); // Send a plain text response
 });
 
-const user = require("./controller/user");
 app.use("/api/v2/user", user);
 
-const authRoutes = require("./controller/auth");
+
 app.use("/api/auth", authRoutes);
 
-app.use(ErrorHandler);
-module.exports = app;
+app.use(ErrorHandlerMiddleware);
+export default app;

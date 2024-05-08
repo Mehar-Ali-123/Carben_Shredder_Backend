@@ -1,5 +1,4 @@
-
-const multer = require("multer");
+import multer from "multer";
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -12,10 +11,9 @@ const storage = multer.diskStorage({
       Math.round(Math.random() * 1e9);
     const filename = file.originalname.split("-")[0];
     cb(null, filename + "-" + uniqueSuffix + ".png");
-  }, 
-});  
+  },
+});
 
-exports.upload = multer({ storage: storage });
+const upload = multer({ storage: storage });
 
-
-
+export default upload;

@@ -1,8 +1,9 @@
-const express = require("express");
+import express from "express";
+import passport from "passport";
+import User from "../model/user.js";
+import sendToken from "../utils/jwtToken.js";
+
 const router = express.Router();
-const passport = require("passport");
-const User = require("../model/user");
-const sendToken = require("../utils/jwtToken.js");
 
 // POST login route
 router.post("/login", passport.authenticate("local"), async (req, res) => {
@@ -31,4 +32,4 @@ router.post("/logout", (req, res) => {
   res.json({ message: "Logged out successfully." });
 });
 
-module.exports = router;
+export default router;

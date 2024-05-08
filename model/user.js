@@ -1,7 +1,7 @@
-const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
+import mongoose from "mongoose";
+const { Schema } = mongoose;
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 const userSchema = new Schema({
   name: {
@@ -40,9 +40,45 @@ const userSchema = new Schema({
   isVerified: {
     type: Boolean,
   },
-  signupDate:{
-    type: String
-  }
+  signupDate: {
+    type: String,
+  },
+
+  // PLAID MODEL
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  },
+  accessToken: {
+    type: String,
+  },
+  itemId: {
+    type: String,
+  },
+  institutionId: {
+    type: String,
+  },
+  cnughtCreatedSubaccunt: [
+    {
+      subaccountId: { type: String },
+      name: { type: String },
+      email: { type: String },
+      createdAt: { type: Date, default: Date.now },
+    },
+  ],
+  cnughtCreatedOrder: [
+    {
+      order_number: { type: String },
+      amount_kg: { type: String },
+      price_usd_cents: { type: String },
+      state: { type: String },
+      created_on: { type: Date },
+    },
+  ],
+  amount_kg: {
+    type: Number,
+    required: false,
+  },
 });
 
 userSchema.methods.getJwtToken = function () {
@@ -73,4 +109,6 @@ userSchema.methods.grantRole = async function (email, newRole) {
   return userToUpdate;
 };
 
-module.exports = mongoose.model("User", userSchema);
+const User = mongoose.model("User", userSchema);
+
+export default User;
